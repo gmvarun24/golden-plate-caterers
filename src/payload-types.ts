@@ -993,6 +993,10 @@ export interface SiteSetting {
      */
     headline?: string | null;
     subheadline?: string | null;
+    /**
+     * Shown in the round gold plate. Pick a dish that reads well in a circle, e.g. a thali from above. Empty = the first featured menu’s photo.
+     */
+    image?: (number | null) | Media;
   };
   whyChooseUs?:
     | {
@@ -1100,6 +1104,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         eyebrow?: T;
         headline?: T;
         subheadline?: T;
+        image?: T;
       };
   whyChooseUs?:
     | T

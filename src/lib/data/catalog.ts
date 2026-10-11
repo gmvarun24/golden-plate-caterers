@@ -48,7 +48,7 @@ function mediaPath(url: string): string {
   }
 }
 
-function toImage(m: Rel<Media>): PublicImage | null {
+export function toImage(m: Rel<Media>): PublicImage | null {
   const media = obj(m)
   if (!media?.url) return null
   const size = (s: { url?: string | null; width?: number | null; height?: number | null } | undefined) =>

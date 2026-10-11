@@ -6,8 +6,11 @@ import { getPayload } from 'payload'
 
 import { DEFAULT_PRICING_DISCLAIMER, SITE_SETTINGS_TAG } from '@/globals/SiteSettings'
 
+import { toImage } from './catalog'
+import type { PublicImage } from './types'
+
 export type SiteContent = {
-  hero: { eyebrow: string; headline: string; subheadline: string }
+  hero: { eyebrow: string; headline: string; subheadline: string; image: PublicImage | null }
   whyChooseUs: { title: string; body: string }[]
   finalCta: { headline: string; body: string }
   faq: { question: string; answer: string }[]
@@ -22,6 +25,7 @@ const DEFAULTS: SiteContent = {
     headline: 'Every occasion, served *in gold*.',
     subheadline:
       'From Gruhapravesha breakfasts to wedding receptions for a thousand — curated menus you can shape plate by plate, with a live price as you go.',
+    image: null,
   },
   whyChooseUs: [],
   finalCta: {
@@ -40,12 +44,13 @@ const load = cached(
   async (): Promise<SiteContent> => {
     const payload = await getPayload({ config })
     const g = await payload.findGlobal({ slug: 'site-settings', depth: 1, overrideAccess: true })
-    const image = g.seo?.image && typeof g.seo.image === 'object' ? g.seo.image.url ?? null : null
+    const image = g.seo?.image && typeof g.seo.image === 'object' ? (g.seo.image.url ?? null) : null
     return {
       hero: {
         eyebrow: text(g.hero?.eyebrow, DEFAULTS.hero.eyebrow),
         headline: text(g.hero?.headline, DEFAULTS.hero.headline),
         subheadline: text(g.hero?.subheadline, DEFAULTS.hero.subheadline),
+        image: toImage(g.hero?.image),
       },
       whyChooseUs: (g.whyChooseUs ?? []).map(({ title, body }) => ({ title, body })),
       finalCta: {

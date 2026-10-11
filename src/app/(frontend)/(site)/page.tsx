@@ -47,7 +47,7 @@ export default async function HomePage() {
         eyebrow={site.hero.eyebrow}
         headline={site.hero.headline}
         subheadline={site.hero.subheadline}
-        image={featured[0]?.image ?? null}
+        image={site.hero.image ?? featured[0]?.image ?? null}
         whatsappHref={whatsappHref(
           brand.contact.whatsapp,
           `Hi ${brand.name}, I'd like to plan catering for an event.`,

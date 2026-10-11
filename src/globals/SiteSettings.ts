@@ -48,6 +48,15 @@ export const SiteSettings: GlobalConfig = {
                   defaultValue:
                     'From Gruhapravesha breakfasts to wedding receptions for a thousand — curated menus you can shape plate by plate, with a live price as you go.',
                 },
+                {
+                  name: 'image',
+                  type: 'upload',
+                  relationTo: 'media',
+                  admin: {
+                    description:
+                      'Shown in the round gold plate. Pick a dish that reads well in a circle, e.g. a thali from above. Empty = the first featured menu’s photo.',
+                  },
+                },
               ],
             },
             {
@@ -100,7 +109,12 @@ export const SiteSettings: GlobalConfig = {
                 {
                   type: 'row',
                   fields: [
-                    { name: 'name', type: 'text', required: true, admin: { description: 'First name + initial is enough.' } },
+                    {
+                      name: 'name',
+                      type: 'text',
+                      required: true,
+                      admin: { description: 'First name + initial is enough.' },
+                    },
                     { name: 'occasion', type: 'text' },
                     { name: 'area', type: 'text' },
                   ],
