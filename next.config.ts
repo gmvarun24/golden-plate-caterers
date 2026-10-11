@@ -6,12 +6,14 @@ import { fileURLToPath } from 'url'
 const __filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(__filename)
 
-/** Allow media served from an S3-compatible bucket / CDN (STORAGE_DRIVER=s3) or Vercel Blob. */
+/**
+ * Allow media served from Vercel Blob (STORAGE_DRIVER=vercel-blob) or an S3-compatible bucket / CDN
+ * (STORAGE_DRIVER=s3). The Blob host is always allowed so the build never depends on the driver
+ * variable being present at build time.
+ */
 const remoteMedia = [
+  { protocol: 'https' as const, hostname: '*.public.blob.vercel-storage.com', pathname: '/**' },
   ...(process.env.S3_PUBLIC_URL ? [new URL(`${process.env.S3_PUBLIC_URL.replace(/\/$/, '')}/**`)] : []),
-  ...(process.env.STORAGE_DRIVER === 'vercel-blob'
-    ? [{ protocol: 'https' as const, hostname: '*.public.blob.vercel-storage.com', pathname: '/**' }]
-    : []),
 ]
 
 /** Baseline security headers for every response (admin included). */
