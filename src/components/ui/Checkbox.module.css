@@ -1,0 +1,16 @@
+.indicator {
+  display: grid;
+  place-items: center;
+}
+
+/* The tick draws in (stroke-dashoffset) when checked, and retracts when unchecked. */
+.tick {
+  stroke-dasharray: 16;
+  stroke-dashoffset: 16;
+  transition: stroke-dashoffset var(--duration-base) var(--ease-out-expo);
+}
+
+.indicator[data-state='checked'] .tick {
+  stroke-dashoffset: 0;
+  transition-delay: 40ms;
+}

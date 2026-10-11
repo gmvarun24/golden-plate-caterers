@@ -1,0 +1,55 @@
+/* Map react-day-picker's own variables onto our tokens. */
+.calendar {
+  --rdp-accent-color: var(--color-accent);
+  --rdp-accent-background-color: var(--color-accent-soft);
+  --rdp-today-color: var(--color-accent);
+  --rdp-day-height: 2.75rem;
+  --rdp-day-width: 2.75rem;
+  --rdp-day_button-height: 2.625rem;
+  --rdp-day_button-width: 2.625rem;
+  --rdp-day_button-border-radius: 9999px;
+  --rdp-selected-border: 2px solid var(--color-accent-fill);
+  --rdp-disabled-opacity: 0.35;
+  --rdp-outside-opacity: 0.45;
+  --rdp-nav-height: 2.75rem;
+  font-family: var(--font-body);
+  color: var(--color-text);
+}
+
+.calendar :global(.rdp-caption_label) {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: var(--font-weight-normal);
+}
+
+.calendar :global(.rdp-weekday) {
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  opacity: 1;
+}
+
+.calendar :global(.rdp-selected .rdp-day_button) {
+  background-color: var(--color-accent-fill);
+  color: var(--color-on-accent);
+  font-weight: var(--font-weight-semibold);
+}
+
+.calendar :global(.rdp-day_button) {
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.calendar :global(.rdp-day:not(.rdp-disabled) .rdp-day_button:hover) {
+  background-color: var(--color-accent-soft);
+}
+
+.calendar :global(.rdp-chevron) {
+  fill: var(--color-accent);
+}
+
+/* Phones: bigger targets (≥ 48px). */
+.large {
+  --rdp-day-height: 3rem;
+  --rdp-day-width: 3rem;
+  --rdp-day_button-height: 2.875rem;
+  --rdp-day_button-width: 2.875rem;
+}

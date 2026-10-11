@@ -1,0 +1,9 @@
+.next
+node_modules
+media
+package-lock.json
+src/payload-types.ts
+src/app/(payload)
+src/components/brand/logo-geometry.ts
+public/brand
+BRIEF.md

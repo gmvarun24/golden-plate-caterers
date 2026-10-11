@@ -1,0 +1,173 @@
+.layer {
+  --cursor-angle: 0deg;
+  --cursor-speed: 0;
+  --cursor-scale: 1;
+  --cursor-opacity: 1;
+  --cursor-border: color-mix(in oklab, var(--color-accent-fill) 78%, transparent);
+  --cursor-fill: transparent;
+  --cursor-glow: color-mix(in oklab, var(--color-accent-fill) 24%, transparent);
+}
+
+:global(.gp-cursor),
+:global(.gp-cursor a),
+:global(.gp-cursor button),
+:global(.gp-cursor label),
+:global(.gp-cursor summary),
+:global(.gp-cursor [role='button']),
+:global(.gp-cursor [data-cursor]) {
+  cursor: none !important;
+}
+
+:global(.gp-cursor input),
+:global(.gp-cursor textarea),
+:global(.gp-cursor select),
+:global(.gp-cursor [contenteditable='true']) {
+  cursor: text !important;
+}
+
+.glow {
+  width: calc(4.75rem + var(--cursor-speed) * 0.02rem);
+  height: calc(4.75rem + var(--cursor-speed) * 0.02rem);
+  opacity: calc(0.16 + min(var(--cursor-speed), 18) * 0.012);
+  background:
+    radial-gradient(circle at 50% 50%, var(--cursor-glow), transparent 62%),
+    conic-gradient(from var(--cursor-angle), transparent, color-mix(in oklab, var(--color-accent-display) 34%, transparent), transparent 38%);
+  filter: blur(10px);
+  transform: translate(-50%, -50%) scale(var(--cursor-scale));
+  transition:
+    width var(--duration-fast) var(--ease-out-expo),
+    height var(--duration-fast) var(--ease-out-expo),
+    opacity var(--duration-base) var(--ease-standard);
+}
+
+.shell {
+  position: relative;
+  display: grid;
+  width: 2.65rem;
+  height: 2.65rem;
+  place-items: center;
+  border-radius: 999px;
+  opacity: var(--cursor-opacity);
+  transform: translate(-50%, -50%) scale(var(--cursor-scale));
+  transition:
+    width var(--duration-base) var(--ease-out-expo),
+    height var(--duration-base) var(--ease-out-expo),
+    opacity var(--duration-fast) var(--ease-standard),
+    transform var(--duration-base) var(--ease-out-expo);
+}
+
+.shell::before,
+.shell::after {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  content: '';
+}
+
+.shell::before {
+  padding: 1px;
+  background:
+    conic-gradient(
+      from var(--cursor-angle),
+      transparent 0 14%,
+      var(--color-accent-display) 22%,
+      var(--cursor-border) 42%,
+      transparent 58% 100%
+    );
+  mask:
+    linear-gradient(currentColor 0 0) content-box,
+    linear-gradient(currentColor 0 0);
+  mask-composite: exclude;
+  -webkit-mask:
+    linear-gradient(currentColor 0 0) content-box,
+    linear-gradient(currentColor 0 0);
+  -webkit-mask-composite: xor;
+}
+
+.shell::after {
+  border: 1px solid color-mix(in oklab, var(--cursor-border) 62%, transparent);
+  background:
+    radial-gradient(circle at 38% 30%, color-mix(in oklab, var(--color-accent-fill-hover) 28%, transparent), transparent 30%),
+    var(--cursor-fill);
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--color-bg) 18%, transparent),
+    0 14px 34px color-mix(in oklab, var(--color-accent-fill) 18%, transparent);
+}
+
+.dot {
+  width: 0.42rem;
+  height: 0.42rem;
+  border-radius: 999px;
+  background: var(--color-accent-fill);
+  box-shadow: 0 0 18px color-mix(in oklab, var(--color-accent-fill) 60%, transparent);
+  transform: translate(-50%, -50%) scale(calc(1 + min(var(--cursor-speed), 16) * 0.03));
+  transition:
+    opacity var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-out-expo);
+}
+
+.label {
+  position: relative;
+  z-index: 1;
+  color: var(--color-on-accent);
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  opacity: 0;
+  text-transform: uppercase;
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+
+.default {
+  --cursor-scale: 1;
+}
+
+.pointer {
+  --cursor-scale: 1.18;
+  --cursor-fill: color-mix(in oklab, var(--color-accent-fill) 8%, transparent);
+}
+
+.labelMode .shell {
+  width: 6.25rem;
+  height: 6.25rem;
+}
+
+.labelMode {
+  --cursor-fill: var(--color-accent-fill);
+  --cursor-border: var(--color-accent-fill-hover);
+  --cursor-scale: 1;
+}
+
+.labelMode .label {
+  opacity: 1;
+}
+
+.invert .shell {
+  width: 7.5rem;
+  height: 7.5rem;
+  mix-blend-mode: difference;
+}
+
+.invert {
+  --cursor-fill: var(--color-cursor-invert);
+  --cursor-border: transparent;
+  --cursor-glow: transparent;
+}
+
+.text {
+  --cursor-opacity: 0;
+}
+
+.hidden {
+  --cursor-opacity: 0;
+}
+
+.hidden .glow,
+.text .glow {
+  opacity: 0;
+}
+
+.labelMode .dot,
+.invert .dot,
+.hidden .dot {
+  opacity: 0;
+}

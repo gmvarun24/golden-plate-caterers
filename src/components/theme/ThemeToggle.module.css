@@ -1,0 +1,33 @@
+.icon {
+  overflow: visible;
+}
+
+.core,
+.bite,
+.rays {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition:
+    transform var(--duration-slow) var(--ease-out-expo),
+    opacity var(--duration-base) var(--ease-standard);
+}
+
+.rays {
+  transform-box: view-box;
+  transform-origin: 12px 12px;
+}
+
+/* Night: the sun grows into a full moon disc, a shadow slides in to carve the crescent,
+ * and the rays fold away. Transform-only animation (no layout). */
+:global(:root[data-theme='dark']) .core {
+  transform: scale(1.7);
+}
+
+:global(:root[data-theme='dark']) .bite {
+  transform: translate(-7.5px, 6.5px);
+}
+
+:global(:root[data-theme='dark']) .rays {
+  opacity: 0;
+  transform: rotate(-45deg) scale(0.6);
+}

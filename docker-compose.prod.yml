@@ -1,0 +1,56 @@
+# Single-VPS production stack: app + Postgres. Put a TLS reverse proxy (Caddy / nginx) in front.
+#   cp .env.example .env.production   # fill in real values
+#   docker compose -f docker-compose.prod.yml --env-file .env.production up -d --build
+#   docker compose -f docker-compose.prod.yml run --rm migrate      # apply DB migrations
+services:
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}']
+      interval: 10s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL}
+        NEXT_PUBLIC_GA4_ID: ${NEXT_PUBLIC_GA4_ID:-}
+    restart: unless-stopped
+    env_file: .env.production
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+    ports:
+      - '127.0.0.1:3000:3000'
+    volumes:
+      - media:/app/media
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # One-off: `docker compose -f docker-compose.prod.yml run --rm migrate`
+  migrate:
+    image: node:22-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+    env_file: .env.production
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      NODE_ENV: production
+    command: sh -c "npm ci && npm run migrate"
+    profiles: ['tools']
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  pgdata:
+  media:
