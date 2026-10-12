@@ -24,8 +24,25 @@ import { storagePlugins } from './lib/storage'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 
+const siteOrigin = new URL(serverEnv.NEXT_PUBLIC_SITE_URL).origin
+
+/**
+ * Origins whose requests may use the admin login cookie. Payload ignores the cookie on a request
+ * from any other origin (CSRF protection), so the admin would act logged out there and every save
+ * would fail with "You are not allowed to perform this action". Besides the configured site URL,
+ * trust the deployment's own Vercel addresses (production, branch and per-deploy URLs) so the admin
+ * also works there, including when NEXT_PUBLIC_SITE_URL is missing or points at another domain.
+ */
+const trustedOrigins = [
+  siteOrigin,
+  ...[process.env.VERCEL_PROJECT_PRODUCTION_URL, process.env.VERCEL_BRANCH_URL, process.env.VERCEL_URL]
+    .filter((host): host is string => Boolean(host))
+    .map((host) => `https://${host}`),
+]
+
 export default buildConfig({
-  serverURL: serverEnv.NEXT_PUBLIC_SITE_URL,
+  serverURL: siteOrigin,
+  csrf: [...new Set(trustedOrigins)],
   admin: {
     user: Users.slug,
     importMap: { baseDir: path.resolve(dirname) },
