@@ -1,6 +1,7 @@
 import NextLink from 'next/link'
 
 import { Logo } from '@/components/brand/Logo'
+import { InstallAppButton } from '@/components/pwa/InstallAppButton'
 import { Link } from '@/components/ui/Link'
 import { getBrand } from '@/lib/brand/get-brand'
 import { mailtoHref, telHref, whatsappHref } from '@/lib/contact'
@@ -30,6 +31,9 @@ export async function SiteFooter() {
           </NextLink>
           <p className="max-w-xs font-display text-2xl leading-snug text-text">{brand.tagline}</p>
           <p className="text-sm text-text-muted">{brand.serviceArea}</p>
+          <div className="text-sm">
+            <InstallAppButton appName={brand.shortName} />
+          </div>
         </div>
 
         {Object.entries(FOOTER_NAV).map(([group, links]) => (

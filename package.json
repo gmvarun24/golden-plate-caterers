@@ -21,6 +21,7 @@
     "check": "npm run typecheck && npm run lint && npm test && npm run check:contrast && npm run check:colors",
     "generate:logo": "tsx scripts/generate-logo.ts",
     "generate:rupee": "tsx scripts/generate-rupee-fonts.ts",
+    "generate:pwa-icons": "tsx scripts/generate-pwa-icons.ts",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
