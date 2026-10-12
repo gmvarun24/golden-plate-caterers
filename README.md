@@ -40,6 +40,7 @@ npm run dev                     # http://localhost:3000
 | `npm run check:contrast` | WCAG AA check of every semantic colour pair in both themes |
 | `npm run check:colors` | Fails if a component or page hard-codes a colour |
 | `npm run generate:logo` | Regenerates the placeholder logo from the brand fonts |
+| `npm run generate:pwa-icons` | Renders the installable-app PNG icons from `public/brand/favicon.svg` |
 | `npm run generate:types` | Regenerates `src/payload-types.ts` after changing collections |
 | `npm run generate:importmap` | Regenerates the admin import map after adding custom admin components |
 | `npm run migrate:create -- <name>` | Creates a database migration after schema changes (commit it) |
@@ -78,7 +79,16 @@ See **[DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)**. In short:
 - **Name, contact details, hours, socials, reference-ID prefix:** `/admin` → Brand Settings (defaults in `src/config/brand.ts`).
 - **Colours:** `src/styles/tokens.css`, then run `npm run check:contrast`.
 - **Fonts:** `src/styles/fonts.ts` plus the fallback stacks in `tokens.css`.
-- **Logo:** replace the files in `public/brand/`, or upload them in Brand Settings.
+- **Logo:** replace the files in `public/brand/`, or upload them in Brand Settings. Then run `npm run generate:pwa-icons` so the installed-app icons match.
+
+## Installable app (PWA)
+
+The site can be installed to a phone's home screen or a desktop like a native app:
+
+- `src/app/manifest.ts` is the web app manifest (name from Brand Settings, icons in `public/icons/`).
+- `public/sw.js` is the service worker, registered in production only. It caches static assets and the pages a visitor has opened, and shows `/offline` (with a call button) for anything else when there is no connection. Admin, API and quote pages are never cached. Bump `VERSION` in it to clear every cache.
+- An **Install** button appears in the footer on browsers that support installing (Chrome, Edge, Android). On iPhone and iPad it explains Share → Add to Home Screen. It hides once the app is installed.
+- Installing needs HTTPS (or `localhost`).
 
 ## Project layout
 
