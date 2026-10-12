@@ -6,10 +6,11 @@ import { PrintButton } from '@/components/quote/PrintButton'
 import { TrackedLink } from '@/components/quote/TrackedLink'
 import { DietMark } from '@/components/ui/Badge'
 import { buttonVariants } from '@/components/ui/Button'
+import { EmailMenu } from '@/components/ui/EmailMenu'
 import { MailIcon, PhoneIcon, WhatsAppIcon } from '@/components/ui/icons'
 import { getBrand } from '@/lib/brand/get-brand'
 import { cn } from '@/lib/cn'
-import { mailtoHref, telHref, whatsappHref } from '@/lib/contact'
+import { telHref, whatsappHref } from '@/lib/contact'
 import { getQuote } from '@/lib/data/quote'
 import { serverEnv } from '@/lib/env'
 import { formatINR, formatINRNumber } from '@/lib/format/currency'
@@ -77,13 +78,15 @@ export default async function QuotePage({ params }: Props) {
           <TrackedLink event="call_click" href={telHref(brand.contact.phone)} className={cn(buttonVariants({ size: 'lg' }), 'w-full')}>
             <PhoneIcon /> Call
           </TrackedLink>
-          <TrackedLink
-            event="email_click"
-            href={mailtoHref(brand.contact.email, mailSubject, mailBody)}
+          <EmailMenu
+            email={brand.contact.email}
+            subject={mailSubject}
+            body={mailBody}
+            trackParams={{ location: 'quote' }}
             className={cn(buttonVariants({ variant: 'secondary', size: 'lg' }), 'w-full')}
           >
             <MailIcon /> Email
-          </TrackedLink>
+          </EmailMenu>
         </div>
         <p className="text-sm text-text-muted">
           Calling? Please mention your reference <strong className="text-text tabular">{quote.referenceId}</strong>.{' '}

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 
 import { PageHeader, Prose, ReviewNotice } from '@/components/layout/PageHeader'
+import { EmailMenu } from '@/components/ui/EmailMenu'
 import { getBrand } from '@/lib/brand/get-brand'
 
 export const metadata: Metadata = {
@@ -39,7 +40,9 @@ export default async function TermsPage() {
         </p>
         <h2>Contact</h2>
         <p>
-          Questions about these terms: <a href={`mailto:${brand.contact.email}`}>{brand.contact.email}</a>.
+          Questions about these terms: <EmailMenu email={brand.contact.email} className="text-accent underline">
+            {brand.contact.email}
+          </EmailMenu>.
         </p>
       </Prose>
     </div>

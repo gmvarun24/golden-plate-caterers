@@ -2,9 +2,10 @@ import NextLink from 'next/link'
 
 import { Logo } from '@/components/brand/Logo'
 import { InstallAppButton } from '@/components/pwa/InstallAppButton'
+import { EmailMenu } from '@/components/ui/EmailMenu'
 import { Link } from '@/components/ui/Link'
 import { getBrand } from '@/lib/brand/get-brand'
-import { mailtoHref, telHref, whatsappHref } from '@/lib/contact'
+import { telHref, whatsappHref } from '@/lib/contact'
 
 import { FOOTER_NAV } from './nav'
 
@@ -72,9 +73,9 @@ export async function SiteFooter() {
                 </a>
               </li>
               <li>
-                <a href={mailtoHref(brand.contact.email)} data-analytics="email_click" className="hover:text-accent">
+                <EmailMenu email={brand.contact.email} className="text-left break-all hover:text-accent">
                   {brand.contact.email}
-                </a>
+                </EmailMenu>
               </li>
             </ul>
           </div>
