@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 
 import { PageHeader, Prose, ReviewNotice } from '@/components/layout/PageHeader'
+import { EmailMenu } from '@/components/ui/EmailMenu'
 import { getBrand } from '@/lib/brand/get-brand'
 
 export const metadata: Metadata = {
@@ -64,7 +65,9 @@ export default async function PrivacyPage() {
         </ul>
         <h2>Grievance officer</h2>
         <p>
-          Email <a href={`mailto:${brand.contact.email}`}>{brand.contact.email}</a> or call {brand.contact.phone}. We
+          Email <EmailMenu email={brand.contact.email} className="text-accent underline">
+            {brand.contact.email}
+          </EmailMenu> or call {brand.contact.phone}. We
           respond within 30 days. <em>[Name and postal address of the grievance officer to be added.]</em>
         </p>
         <h2>Cookies</h2>

@@ -20,3 +20,11 @@ export function mailtoHref(email: string, subject?: string, body?: string): stri
   ].filter(Boolean)
   return `mailto:${email}${params.length ? `?${params.join('&')}` : ''}`
 }
+
+/** Gmail's web compose window, pre-filled — works when the visitor has no mail app set up. */
+export function gmailComposeHref(email: string, subject?: string, body?: string): string {
+  const params = new URLSearchParams({ view: 'cm', fs: '1', to: email })
+  if (subject) params.set('su', subject)
+  if (body) params.set('body', body)
+  return `https://mail.google.com/mail/?${params.toString()}`
+}

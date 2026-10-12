@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { mailtoHref, telHref, whatsappHref } from '@/lib/contact'
+import { gmailComposeHref, mailtoHref, telHref, whatsappHref } from '@/lib/contact'
 
 describe('contact links', () => {
   it('builds wa.me links with an encoded message', () => {
@@ -19,5 +19,13 @@ describe('contact links', () => {
     expect(mailtoHref('a@b.in', 'Quote GPC-1026-0042 – Wedding', 'Link: https://x.in/q/1?a=b')).toBe(
       'mailto:a@b.in?subject=Quote%20GPC-1026-0042%20%E2%80%93%20Wedding&body=Link%3A%20https%3A%2F%2Fx.in%2Fq%2F1%3Fa%3Db',
     )
+  })
+
+  it('builds a pre-filled Gmail compose link', () => {
+    expect(gmailComposeHref('a@b.in')).toBe('https://mail.google.com/mail/?view=cm&fs=1&to=a%40b.in')
+    const url = new URL(gmailComposeHref('a@b.in', 'Quote – Wedding', 'Link: https://x.in/q/1?a=b&c=d'))
+    expect(url.searchParams.get('to')).toBe('a@b.in')
+    expect(url.searchParams.get('su')).toBe('Quote – Wedding')
+    expect(url.searchParams.get('body')).toBe('Link: https://x.in/q/1?a=b&c=d')
   })
 })
