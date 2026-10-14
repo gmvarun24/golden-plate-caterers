@@ -59,15 +59,18 @@ export function HowItWorks() {
                 >
                   <span
                     aria-hidden="true"
+                    data-step-badge
                     className="grid size-16 place-items-center rounded-full border border-accent-fill font-display text-2xl text-accent-display shadow-[inset_0_0_0_6px_var(--color-bg),inset_0_0_0_7px_var(--color-border-accent)]"
                   >
                     {i + 1}
                   </span>
-                  <h3 className="text-3xl">
+                  <h3 data-step-body className="text-3xl">
                     <span className="sr-only">Step {i + 1}: </span>
                     {step.title}
                   </h3>
-                  <p className="text-text-muted">{step.body}</p>
+                  <p data-step-body className="text-text-muted">
+                    {step.body}
+                  </p>
                 </li>
               ))}
             </ol>

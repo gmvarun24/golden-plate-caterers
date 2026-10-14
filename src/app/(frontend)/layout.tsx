@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import type { ReactNode } from 'react'
 
+import { ServiceWorker } from '@/components/pwa/ServiceWorker'
 import { ThemeProvider } from '@/components/theme/ThemeProvider'
 import { Toaster } from '@/components/ui/Toaster'
 import { getBrand } from '@/lib/brand/get-brand'
@@ -14,7 +15,12 @@ export async function generateMetadata(): Promise<Metadata> {
     title: { default: `${brand.name} — ${brand.tagline}`, template: `%s · ${brand.shortName}` },
     description: `${brand.name}: premium event catering. Weddings, receptions, house-warmings, birthdays and corporate events.`,
     applicationName: brand.name,
-    icons: { icon: [{ url: brand.logo.favicon, type: 'image/svg+xml' }] },
+    icons: {
+      icon: [{ url: brand.logo.favicon, type: 'image/svg+xml' }],
+      apple: [{ url: '/icons/apple-touch-icon.png', sizes: '180x180' }],
+    },
+    // Launch full-screen from the iOS home screen, like the manifest's `display: standalone`.
+    appleWebApp: { capable: true, title: brand.shortName, statusBarStyle: 'default' },
   }
 }
 
@@ -50,6 +56,7 @@ export default function FrontendLayout({ children }: { children: ReactNode }) {
           </a>
           {children}
           <Toaster />
+          <ServiceWorker />
         </ThemeProvider>
       </body>
     </html>

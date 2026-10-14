@@ -58,8 +58,12 @@ test('browse, customise, enquire and land on the quote page', async ({ page, isM
   const main = page.getByRole('main')
   const wa = await main.getByRole('link', { name: 'WhatsApp', exact: true }).getAttribute('href')
   expect(decodeURIComponent(wa ?? '')).toContain(`discuss quote ${reference}`)
-  const mail = await main.getByRole('link', { name: 'Email', exact: true }).getAttribute('href')
+  await main.getByRole('button', { name: 'Email', exact: true }).click()
+  const mail = await page.getByRole('menuitem', { name: 'Open email app' }).getAttribute('href')
   expect(decodeURIComponent(mail ?? '')).toContain(`Quote ${reference}`)
+  const gmail = new URL((await page.getByRole('menuitem', { name: 'Open in Gmail' }).getAttribute('href')) ?? '')
+  expect(gmail.searchParams.get('su')).toContain(`Quote ${reference}`)
+  await page.keyboard.press('Escape')
 
   // Wrong token → 404
   const res = await page.request.get(page.url().replace(/-[a-z2-9]{6}$/, '-aaaaaa'))

@@ -149,14 +149,16 @@
   }
 }
 
-/* Masked line/word reveal (headings): words rise out of an invisible mask. */
+/* Masked line/word reveal (headings): words rise out of an invisible mask.
+ * The mask is padded on every side (and the padding cancelled with negative margins, so layout
+ * is unchanged) to leave room for descenders and italic overhangs — "g" and "d" in *in gold*.
+ * Padding rather than overflow-clip-margin, which iOS Safari ignores. */
 .split-word {
   display: inline-block;
   overflow: clip;
-  overflow-clip-margin: 0.12em;
   vertical-align: top;
-  padding-bottom: 0.08em;
-  margin-bottom: -0.08em;
+  padding: 0.1em 0.16em 0.26em;
+  margin: -0.1em -0.16em -0.26em;
 }
 .split-word > span {
   display: inline-block;
@@ -170,11 +172,11 @@
   transition-delay: calc(var(--i, 0) * var(--stagger-xs));
 }
 .motion-ready [data-reveal='words']:not([data-revealed]) .split-word > span {
-  transform: translate3d(0, 105%, 0);
+  transform: translate3d(0, calc(100% + 0.4em), 0);
 }
 @keyframes word-rise {
   from {
-    transform: translate3d(0, 105%, 0);
+    transform: translate3d(0, calc(100% + 0.4em), 0);
   }
 }
 

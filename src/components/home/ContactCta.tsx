@@ -1,9 +1,10 @@
 import NextLink from 'next/link'
 
 import { buttonVariants } from '@/components/ui/Button'
+import { EmailMenu } from '@/components/ui/EmailMenu'
 import { MailIcon, PhoneIcon, WhatsAppIcon } from '@/components/ui/icons'
 import type { Brand } from '@/config/brand'
-import { mailtoHref, telHref, whatsappHref } from '@/lib/contact'
+import { telHref, whatsappHref } from '@/lib/contact'
 
 import { Emphasis } from './Emphasis'
 
@@ -45,13 +46,13 @@ export function ContactCta({ brand, headline, body }: { brand: Brand; headline: 
           >
             <WhatsAppIcon /> WhatsApp
           </a>
-          <a
-            href={mailtoHref(brand.contact.email, 'Catering enquiry')}
-            data-analytics="email_click"
+          <EmailMenu
+            email={brand.contact.email}
+            subject="Catering enquiry"
             className={buttonVariants({ size: 'lg', variant: 'secondary' })}
           >
             <MailIcon /> Email
-          </a>
+          </EmailMenu>
         </div>
         <p className="text-sm text-text-muted">
           {brand.hours.map((h) => `${h.days}: ${h.hours}`).join(' · ')}

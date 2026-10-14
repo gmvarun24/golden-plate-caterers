@@ -3,9 +3,10 @@ import NextLink from 'next/link'
 
 import { EnquiryForm } from '@/components/enquiry/EnquiryForm'
 import { PageHeader } from '@/components/layout/PageHeader'
+import { EmailMenu } from '@/components/ui/EmailMenu'
 import { MailIcon, PhoneIcon, WhatsAppIcon } from '@/components/ui/icons'
 import { getBrand } from '@/lib/brand/get-brand'
-import { mailtoHref, telHref, whatsappHref } from '@/lib/contact'
+import { telHref, whatsappHref } from '@/lib/contact'
 import { getEventTypes, getPackage } from '@/lib/data/catalog'
 
 export const metadata: Metadata = {
@@ -27,15 +28,20 @@ export default async function ContactPage({ searchParams }: Props) {
   const channels = [
     { icon: PhoneIcon, label: 'Call us', value: brand.contact.phone, href: telHref(brand.contact.phone), analytics: 'call_click', external: false },
     { icon: WhatsAppIcon, label: 'WhatsApp', value: 'Chat with our team', href: whatsappHref(brand.contact.whatsapp, message), analytics: 'whatsapp_click', external: true },
-    {
-      icon: MailIcon,
-      label: 'Email',
-      value: brand.contact.email,
-      href: mailtoHref(brand.contact.email, pkg ? `Enquiry: ${pkg.title}` : 'Catering enquiry', message),
-      analytics: 'email_click',
-      external: false,
-    },
   ]
+  const cardClass =
+    'group flex h-full w-full flex-col gap-4 rounded-md border border-border bg-surface p-6 text-left shadow-sm transition-[border-color,transform] duration-(--duration-base) ease-out-expo hover:-translate-y-0.5 hover:border-border-accent'
+  const cardBody = (Icon: typeof MailIcon, label: string, value: string) => (
+    <>
+      <span className="grid size-12 place-items-center rounded-full border border-accent-fill text-accent">
+        <Icon className="size-5" />
+      </span>
+      <span className="flex flex-col gap-1">
+        <span className="text-sm text-text-muted">{label}</span>
+        <span className="font-medium break-words group-hover:text-accent">{value}</span>
+      </span>
+    </>
+  )
 
   return (
     <div className="container-wide grid gap-14 pt-12 pb-(--spacing-section) md:pt-16 lg:grid-cols-12">
@@ -65,18 +71,22 @@ export default async function ContactPage({ searchParams }: Props) {
                 href={href}
                 data-analytics={analytics}
                 {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                className="group flex h-full flex-col gap-4 rounded-md border border-border bg-surface p-6 shadow-sm transition-[border-color,transform] duration-(--duration-base) ease-out-expo hover:-translate-y-0.5 hover:border-border-accent"
+                className={cardClass}
               >
-                <span className="grid size-12 place-items-center rounded-full border border-accent-fill text-accent">
-                  <Icon className="size-5" />
-                </span>
-                <span className="flex flex-col gap-1">
-                  <span className="text-sm text-text-muted">{label}</span>
-                  <span className="font-medium break-words group-hover:text-accent">{value}</span>
-                </span>
+                {cardBody(Icon, label, value)}
               </a>
             </li>
           ))}
+          <li>
+            <EmailMenu
+              email={brand.contact.email}
+              subject={pkg ? `Enquiry: ${pkg.title}` : 'Catering enquiry'}
+              body={message}
+              className={cardClass}
+            >
+              {cardBody(MailIcon, 'Email', brand.contact.email)}
+            </EmailMenu>
+          </li>
         </ul>
         <section aria-labelledby="enquiry-title" className="flex flex-col gap-6 rounded-lg border border-border bg-surface p-6 shadow-sm sm:p-8">
           <div className="flex flex-col gap-2">
