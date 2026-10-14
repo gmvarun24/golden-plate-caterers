@@ -20,7 +20,11 @@ export async function generateMetadata(): Promise<Metadata> {
       apple: [{ url: '/icons/apple-touch-icon.png', sizes: '180x180' }],
     },
     // Launch full-screen from the iOS home screen, like the manifest's `display: standalone`.
-    appleWebApp: { capable: true, title: brand.shortName, statusBarStyle: 'default' },
+    // `black-translucent`: the page starts at the very top of the screen, under the status bar, and
+    // env(safe-area-inset-top) is the status bar's height, which the sticky header pads by. With
+    // `default`, the installed app can place the stuck header below the status bar after the first
+    // scroll while content still scrolls up behind the clock.
+    appleWebApp: { capable: true, title: brand.shortName, statusBarStyle: 'black-translucent' },
   }
 }
 
