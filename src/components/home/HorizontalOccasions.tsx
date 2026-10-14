@@ -8,7 +8,8 @@ import { ScrollScene } from '@/components/motion/ScrollScene'
  * Desktop: the page keeps scrolling normally until the whole row of cards (including the titles
  * on the images) is in view, then the section pins and vertical scrolling drives the row
  * horizontally. When the last card is in view, normal scrolling resumes.
- * Phones/tablets keep the native swipeable carousel (scroll-snap).
+ * Phones/tablets keep the native swipeable carousel (scroll-snap); as it scrolls into view the
+ * row glides in from the right (scrubbed), hinting that it can be swiped.
  */
 export function HorizontalOccasions({ children }: { children: ReactNode }) {
   return (
@@ -35,6 +36,19 @@ export function HorizontalOccasions({ children }: { children: ReactNode }) {
             anticipatePin: 1,
           },
         })
+      }}
+      otherwise={(root, { gsap }) => {
+        const track = root.querySelector<HTMLElement>('[data-hscroll]')
+        if (!track) return
+        gsap.fromTo(
+          track,
+          { xPercent: 30 },
+          {
+            xPercent: 0,
+            ease: 'none',
+            scrollTrigger: { trigger: track, start: 'top bottom', end: 'center 60%', scrub: 0.6 },
+          },
+        )
       }}
     >
       {children}
