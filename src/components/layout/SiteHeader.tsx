@@ -16,10 +16,10 @@ export async function SiteHeader() {
   const brand = await getBrand()
   const wa = whatsappHref(brand.contact.whatsapp, `Hi ${brand.name}, I'd like to plan catering for an event.`)
   return (
-    // `pt-[env(safe-area-inset-top)]` fills the status-bar area under viewport-fit=cover. `before:` is a
-    // solid strip extending up from the header: mobile Safari can leave a gap above a stuck header
-    // while its toolbar collapses on the first scroll, and the strip fills it.
-    <header className="sticky top-0 z-(--z-header) border-b border-border/70 bg-bg/95 pt-[env(safe-area-inset-top)] backdrop-blur-md before:pointer-events-none before:absolute before:inset-x-0 before:bottom-full before:h-40 before:bg-bg supports-[backdrop-filter]:bg-bg/80">
+    // `pt-[env(safe-area-inset-top)]` fills the status-bar area under viewport-fit=cover. Phones get a
+    // solid background: iOS Safari tints the status bar from an opaque header at the top edge, but
+    // shows the page through it when the header is translucent. Frosted glass from lg up only.
+    <header className="sticky top-0 z-(--z-header) border-b border-border/70 bg-bg pt-[env(safe-area-inset-top)] lg:bg-bg/95 lg:backdrop-blur-md lg:supports-[backdrop-filter]:bg-bg/80">
       <div className="container-wide flex h-16 items-center justify-between gap-4 md:h-[4.5rem]">
         <NextLink href="/" aria-label={`${brand.name} — home`} className="shrink-0 rounded-sm">
           <Logo className="hidden h-11 sm:inline-block" title={brand.name} />
