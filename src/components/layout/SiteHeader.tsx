@@ -16,7 +16,7 @@ export async function SiteHeader() {
   const brand = await getBrand()
   const wa = whatsappHref(brand.contact.whatsapp, `Hi ${brand.name}, I'd like to plan catering for an event.`)
   return (
-    <header className="sticky top-0 z-(--z-header) border-b border-border/70 bg-bg/95 backdrop-blur-md supports-[backdrop-filter]:bg-bg/80">
+    <header className="sticky top-0 z-(--z-header) border-b border-border/70 bg-bg/95 pt-[env(safe-area-inset-top)] backdrop-blur-md supports-[backdrop-filter]:bg-bg/80">
       <div className="container-wide flex h-16 items-center justify-between gap-4 md:h-[4.5rem]">
         <NextLink href="/" aria-label={`${brand.name} — home`} className="shrink-0 rounded-sm">
           <Logo className="hidden h-11 sm:inline-block" title={brand.name} />
